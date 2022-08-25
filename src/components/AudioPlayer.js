@@ -1,25 +1,32 @@
 import React, { useState, useEffect, useRef } from "react";
 
-const audioRoot = "https://quran-abdullah-adel.s3.eu-central-1.amazonaws.com/";
+const audioRoot = "https://quran-adel.s3.eu-central-1.amazonaws.com/";
 
 export default function AudioPlayer({ audioSrc = "" }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [trackProgress, setTrackProgress] = useState(0);
-  const audioRef = useRef(
-    typeof Audio !== "undefined" && new Audio(`${audioRoot}${audioSrc}`)
-  );
+  const [duration, setDuration] = useState(0);
+  const audioRef = useRef();
   const intervalRef = useRef();
   const isReady = useRef(false);
-  const { duration } = audioRef.current;
+
   useEffect(() => {
     if (isPlaying) {
-      audioRef.current.play();
+      audioRef?.current.play();
       startTimer();
     } else {
       clearInterval(intervalRef.current);
-      audioRef.current.pause();
+      if (audioSrc !== "") {
+        audioRef?.current.pause();
+      }
     }
-  }, [isPlaying]);
+  }, [isPlaying, audioSrc]);
+  useEffect(() => {
+    console.log(audioSrc);
+    audioRef.current =
+      typeof Audio !== "undefined" && new Audio(`${audioRoot}${audioSrc}`);
+    setDuration(audioRef?.current.duration);
+  }, [audioSrc]);
   useEffect(() => {
     // Pause and clean up on unmount
     return () => {
