@@ -6,29 +6,39 @@ import useSWR from "swr";
 const pageRoot = "https://quran-images-api.herokuapp.com/show/page/";
 const quranAPI =
   "https://api.quran.com/api/v4/quran/verses/uthmani?page_number=";
-//Get page text in uthmani like https://api.quran.com/api/v4/quran/verses/uthmani?page_number=151
-//Display text using CSS to display as close as page as possible
-//Highlight verse based on css block id same as audio file
 
 const fetcher = (url) => fetch(url).then((r) => r.json());
 
 export default function Home() {
   const [currentPage, setCurrentPage] = useState(151);
   const { data, error } = useSWR(`${quranAPI}${currentPage}`, fetcher);
-  const [currentSrc, setCurrentSrc] = useState("");
+  const [currentSrc, setCurrentSrc] = useState();
+  const [currentId, setCurrentId] = useState("7_1");
   if (error) return <div>failed to load</div>;
   if (!data) return <div>loading...</div>;
 
   const playVerse = (id) => {
     const idParts = id.split(":");
-    const src = `00${idParts[0]}0${idParts[1]}.mp3`;
+    let src;
+    if (Number(idParts[1]) < 10) {
+      src = `00${idParts[0]}0${idParts[1]}.mp3`;
+    } else {
+      src = `00${idParts[0]}${idParts[1]}.mp3`;
+    }
+    setCurrentId(id);
     setCurrentSrc(src);
-    //setCurrentSrc(`00${idParts[0]}0${idParts[1]}.mp3`);
-    console.log(`00${idParts[0]}0${idParts[1]}.mp3`);
+    console.log(src);
+  };
+
+  const findVerseStart = (verses) => {
+    const startVerse = verses[0].verse_key.split(":")[1]
+      ? Number(verses[0].verse_key.split(":")[1])
+      : 1;
+    return startVerse;
   };
 
   return (
-    <div>
+    <html dir="rtl">
       <Head>
         <title>Quran Recitation</title>
         <meta name="description" content="Recitation by Abdullah Adel" />
@@ -66,7 +76,7 @@ export default function Home() {
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                d="M11 15l-3-3m0 0l3-3m-3 3h8M3 12a9 9 0 1118 0 9 9 0 01-18 0z"
+                d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>
             <svg
@@ -81,7 +91,7 @@ export default function Home() {
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                d="M11 15l-3-3m0 0l3-3m-3 3h8M3 12a9 9 0 1118 0 9 9 0 01-18 0z"
               />
             </svg>
           </div>
@@ -91,34 +101,24 @@ export default function Home() {
           className="flex p-2 justify-center pt-14 pb-32"
         >
           <div className="lg:max-w-screen-lg max-w-full flex-shrink-0 hover:cursor-pointer group touch-auto:cursor-pointer">
-            <div className="inset-1/2 fixed">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-32 w-32 sm:h-64 sm:w-64 text-blue-500 -left-16 -top-16 sm:-left-32 sm:-top-32 absolute hidden group-hover:block"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </div>
             {data.verses.length > 0 && (
-              <div className="flex flex-wrap flex-row gap-x-5 gap-y-2">
+              <ol className="list-decimal" start={findVerseStart(data.verses)}>
                 {data.verses.map((verse) => {
                   return (
-                    <div
+                    <li
                       key={verse.verse_key}
-                      className="flex-initial"
+                      className={`border-solid ${
+                        currentId === verse.verse_key
+                          ? `border-2 bg-white`
+                          : `border-0`
+                      } border-indigo-600 rounded-lg p-2 hover:bg-slate-200`}
                       onClick={(e) => playVerse(verse.verse_key)}
                     >
-                      {verse.verse_key} {verse.text_uthmani}
-                    </div>
+                      <span className="text-3xl">{verse.text_uthmani}</span>
+                    </li>
                   );
                 })}
-              </div>
+              </ol>
             )}
           </div>
         </div>
@@ -131,6 +131,6 @@ export default function Home() {
           </div>
         </div>
       </div>
-    </div>
+    </html>
   );
 }

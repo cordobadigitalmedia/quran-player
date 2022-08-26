@@ -5,10 +5,11 @@ const audioRoot = "https://quran-adel.s3.eu-central-1.amazonaws.com/";
 export default function AudioPlayer({ audioSrc = "" }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [trackProgress, setTrackProgress] = useState(0);
-  const [duration, setDuration] = useState(0);
-  const audioRef = useRef();
+  const audioRef = useRef(new Audio(`${audioRoot}${audioSrc}`));
   const intervalRef = useRef();
   const isReady = useRef(false);
+
+  const { duration } = audioRef.current;
 
   useEffect(() => {
     if (isPlaying) {
@@ -21,12 +22,22 @@ export default function AudioPlayer({ audioSrc = "" }) {
       }
     }
   }, [isPlaying, audioSrc]);
+
   useEffect(() => {
-    console.log(audioSrc);
-    audioRef.current =
-      typeof Audio !== "undefined" && new Audio(`${audioRoot}${audioSrc}`);
-    setDuration(audioRef?.current.duration);
+    audioRef.current.pause();
+    if (audioSrc !== "") {
+      audioRef.current = new Audio(`${audioRoot}${audioSrc}`);
+    }
+    if (isReady.current) {
+      audioRef.current.play();
+      setIsPlaying(true);
+      startTimer();
+    } else {
+      // Set the isReady ref as true for the next pass
+      isReady.current = true;
+    }
   }, [audioSrc]);
+
   useEffect(() => {
     // Pause and clean up on unmount
     return () => {
