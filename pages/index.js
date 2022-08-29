@@ -38,11 +38,9 @@ export default function Home() {
   };
 
   return (
-    <html dir="rtl">
+    <>
       <Head>
         <title>Quran Recitation</title>
-        <meta name="description" content="Recitation by Abdullah Adel" />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="flex flex-col bg-[#E9D8BE]">
         <div className="flex justify-center justify-items-stretch p-2 bg-[#120000] text-white fixed top-0 left-0 right-0 drop-shadow-md">
@@ -102,8 +100,8 @@ export default function Home() {
         >
           <div className="lg:max-w-screen-lg max-w-full flex-shrink-0 hover:cursor-pointer group touch-auto:cursor-pointer">
             {data.verses.length > 0 && (
-              <ol className="list-decimal" start={findVerseStart(data.verses)}>
-                {data.verses.map((verse) => {
+              <ul start={findVerseStart(data.verses)}>
+                {data.verses.map((verse, i) => {
                   return (
                     <li
                       key={verse.verse_key}
@@ -111,14 +109,19 @@ export default function Home() {
                         currentId === verse.verse_key
                           ? `border-2 bg-white`
                           : `border-0`
-                      } border-indigo-600 rounded-lg p-2 hover:bg-slate-200`}
+                      } border-indigo-600 rounded-lg p-2 hover:bg-slate-200 flex`}
                       onClick={(e) => playVerse(verse.verse_key)}
                     >
-                      <span className="text-3xl">{verse.text_uthmani}</span>
+                      <span className="bg-indigo-600 text-white rounded-full pt-2 pb-1 ml-2 text-base flex items-center self-start mt-2 justify-center h-7 max-w-[30px] w-full">
+                        {verse.verse_key.split(":")[1]}
+                      </span>
+                      <span className="text-3xl leading-relaxed">
+                        {verse.text_uthmani}
+                      </span>
                     </li>
                   );
                 })}
-              </ol>
+              </ul>
             )}
           </div>
         </div>
@@ -131,6 +134,6 @@ export default function Home() {
           </div>
         </div>
       </div>
-    </html>
+    </>
   );
 }
