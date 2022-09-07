@@ -32,6 +32,7 @@ export default function AudioPlayer({ audioSrc, playStatus, onPlayEnd }) {
       audioRef.current = new Audio(`${audioRoot}${audioSrc}`);
       if (isReady.current) {
         audioRef.current.play();
+        audioRef.current.pa;
         setIsPlaying(true);
         startTimer();
       } else {
