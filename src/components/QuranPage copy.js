@@ -33,10 +33,10 @@ export default function QuranPage({ page }) {
     console.log("play page: " + page);
   };
   return (
-    <div className="-mt-[50px] -mb-[60px]">
+    <div className="border-[15px] p-[5px] sm:border-[30px] sm:p-[10px] border-[#222C50] bg-[#EDDBBF]">
       <img
         onClick={() => playAudio()}
-        className="mx-auto hover:cursor-pointer"
+        className="mx-auto border-2 border-[#222C50] hover:cursor-pointer"
         src={`${quranImage}${page}.jpg`}
         alt="Quran page"
       />

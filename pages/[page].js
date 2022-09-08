@@ -2,6 +2,11 @@ import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import QuranPage from "../src/components/QuranPage";
+import Link from "next/link";
+import {
+  ArrowLeftCircleIcon,
+  ArrowRightCircleIcon,
+} from "@heroicons/react/24/outline";
 
 const Page = (quran) => {
   const router = useRouter();
@@ -21,6 +26,9 @@ const Page = (quran) => {
     }
     return src;
   };
+  useEffect(() => {
+    setCurrentPage(page);
+  }, [page]);
   return (
     <div>
       <Head>
@@ -33,13 +41,24 @@ const Page = (quran) => {
           تلاوة القرآن بصوت عبدالله عادل
         </div>
       </div>
-      <div className="h-screen sm:h-full flex items-center justify-center bg-[#222C50]">
+      <div className="h-screen sm:h-full flex items-center justify-center">
         <div className="max-w-2xl mx-auto py-10">
           {page && <QuranPage page={page} />}
         </div>
       </div>
       <div className="flex justify-center py-2 text-gray-100 fixed bottom-0 left-0 right-0 bg-[#222C50] text-l">
-        {`الأعراف | صفحة`}
+        <div className="flex items-center justify-evenly">
+          <Link href={`/${Number(page) + 1}`}>
+            <button type="button" className="ml-2" aria-label="Right">
+              <ArrowRightCircleIcon className="h-7 w-7 cursor-pointer text-white" />
+            </button>
+          </Link>
+          <Link href={`/${Number(page) - 1}`}>
+            <button type="button" className="mr-2" aria-label="Left">
+              <ArrowLeftCircleIcon className="h-7 w-7 cursor-pointer text-white" />
+            </button>
+          </Link>
+        </div>
       </div>
     </div>
   );
