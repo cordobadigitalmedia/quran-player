@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
-
-const quranImage = "https://quran-images-api.herokuapp.com/show/page/";
+import QuranPage from "../src/components/QuranPage";
 
 const Page = (quran) => {
   const router = useRouter();
@@ -28,13 +27,20 @@ const Page = (quran) => {
         <title>Quran Recitation</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      {page && (
-        <div className="flex bg-[#222C50] h-screen justify-center">
-          <div className="max-w-xl bg-[#EDDABC] border-[#222C50] border-solid border-[20px]">
-            <img src={`${quranImage}${page}`} alt="Quran page" />
-          </div>
+
+      <div className="flex justify-center justify-items-stretch p-2 bg-[#222C50] text-white fixed top-0 left-0 right-0">
+        <div className="pl-2 flex flex-grow justify-center text-lg md:text-xl lg:text-2xl truncate">
+          تلاوة القرآن بصوت عبدالله عادل
         </div>
-      )}
+      </div>
+      <div className="h-screen sm:h-full flex items-center justify-center bg-[#222C50]">
+        <div className="max-w-2xl mx-auto py-10">
+          {page && <QuranPage page={page} />}
+        </div>
+      </div>
+      <div className="flex justify-center py-2 text-gray-100 fixed bottom-0 left-0 right-0 bg-[#222C50] text-l">
+        {`الأعراف | صفحة`}
+      </div>
     </div>
   );
 };
