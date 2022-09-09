@@ -5,39 +5,49 @@ const quranImage =
 const quranAudio =
   "https://res.cloudinary.com/duisewapt/video/upload/v1662610449/quran/audio/";
 
-export default function QuranPage({ page }) {
+function usePrevious(value) {
+  const ref = useRef();
+  useEffect(() => {
+    ref.current = value; //assign the value of ref to the argument
+  }, [value]); //this code will run when the value of 'value' changes
+  return ref.current; //in the end, return the current ref value.
+}
+
+export default function QuranPage({ page, updatePlay, playStatus }) {
   const audioRef = useRef(
     typeof Audio !== "undefined"
       ? new Audio(`${quranAudio}${page}.mp3`)
       : undefined
   );
-  const prevAudioRef = useRef();
   const [isPlaying, setIsPlaying] = useState(false);
+  const [currentPage, setCurrentPage] = useState(page);
+  const prevPage = usePrevious(currentPage);
 
   useEffect(() => {
-    prevAudioRef.current = page;
-    if (!audioRef.current) {
+    setCurrentPage(page);
+    setIsPlaying(playStatus);
+    if (!audioRef.current || prevPage !== currentPage) {
       audioRef.current?.load();
-      audioRef.current = new Audio(`${quranAudio}${page}.mp3`);
+      audioRef.current = new Audio(`${quranAudio}${currentPage}.mp3`);
     }
     if (isPlaying) {
       audioRef.current?.play();
     } else {
       audioRef.current?.pause();
     }
-    console.log(prevAudioRef.current, page);
-  }, [isPlaying, page]);
+  }, [isPlaying, currentPage, page, playStatus]);
 
   const playAudio = () => {
-    setIsPlaying(!isPlaying);
-    console.log("play page: " + page);
+    const newPlayStatus = !isPlaying;
+    setIsPlaying(newPlayStatus);
+    updatePlay(newPlayStatus);
   };
   return (
     <div className="-mt-[50px] -mb-[60px]">
       <img
         onClick={() => playAudio()}
         className="mx-auto hover:cursor-pointer"
-        src={`${quranImage}${page}.jpg`}
+        src={`${quranImage}${currentPage}.jpg`}
         alt="Quran page"
       />
     </div>

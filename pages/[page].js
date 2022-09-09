@@ -4,31 +4,28 @@ import Head from "next/head";
 import QuranPage from "../src/components/QuranPage";
 import Link from "next/link";
 import {
-  ArrowLeftCircleIcon,
-  ArrowRightCircleIcon,
-} from "@heroicons/react/24/outline";
+  ChevronRightIcon,
+  ChevronLeftIcon,
+  PlayIcon,
+  PauseIcon,
+  ListBulletIcon,
+} from "@heroicons/react/24/solid";
+import TopBar from "../src/components/TopBar";
+
+const maxPages = 3;
 
 const Page = (quran) => {
   const router = useRouter();
   const { page } = router.query;
-  console.log(quran);
   const pageData = quran.page;
   const [currentPage, setCurrentPage] = useState(0);
-  const updatePage = (no) => {
-    setCurrentPage(no);
-  };
-  const setSrcFromPage = (no) => {
-    let src = "";
-    if (no < 9) {
-      src = `0${no + 1}.mp3`;
-    } else {
-      src = `${no + 1}.mp3`;
-    }
-    return src;
-  };
+  const [isPlaying, setIsPlaying] = useState(false);
   useEffect(() => {
     setCurrentPage(page);
   }, [page]);
+  const updatePlayStatus = (status) => {
+    setIsPlaying(status);
+  };
   return (
     <div>
       <Head>
@@ -36,28 +33,59 @@ const Page = (quran) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className="flex justify-center justify-items-stretch p-2 bg-[#222C50] text-white fixed top-0 left-0 right-0">
-        <div className="pl-2 flex flex-grow justify-center text-lg md:text-xl lg:text-2xl truncate">
-          تلاوة القرآن بصوت عبدالله عادل
-        </div>
-      </div>
+      <TopBar />
       <div className="h-screen sm:h-full flex items-center justify-center">
-        <div className="max-w-2xl mx-auto py-10">
-          {page && <QuranPage page={page} />}
+        <div className="max-w-2xl mx-auto pt-10 pb-20">
+          {page && (
+            <QuranPage
+              page={page}
+              updatePlay={updatePlayStatus}
+              playStatus={isPlaying}
+            />
+          )}
         </div>
       </div>
-      <div className="flex justify-center py-2 text-gray-100 fixed bottom-0 left-0 right-0 bg-[#222C50] text-l">
-        <div className="flex items-center justify-evenly">
-          <Link href={`/${Number(page) + 1}`}>
-            <button type="button" className="ml-2" aria-label="Right">
-              <ArrowRightCircleIcon className="h-7 w-7 cursor-pointer text-white" />
-            </button>
-          </Link>
-          <Link href={`/${Number(page) - 1}`}>
-            <button type="button" className="mr-2" aria-label="Left">
-              <ArrowLeftCircleIcon className="h-7 w-7 cursor-pointer text-white" />
-            </button>
-          </Link>
+      <div className="fixed bottom-0 left-0 right-0">
+        <div className="bg-[#222C50] text-slate-500 dark:bg-slate-600 dark:text-slate-200 flex items-center justify-center">
+          <div className="flex-auto flex items-center max-w-2xl px-2">
+            <Link href={Number(page) > 1 ? `${Number(page) - 1}` : `#`}>
+              <button
+                type="button"
+                aria-label="Next"
+                className="flex flex-grow justify-start"
+              >
+                <ChevronLeftIcon className="h-9 w-9 cursor-pointer text-white mb-2" />
+              </button>
+            </Link>
+            <div className="flex">
+              <button
+                type="button"
+                class="bg-white text-slate-900 dark:bg-slate-100 dark:text-slate-700 flex-none -mt-2 mb-2 mx-auto w-16 h-16 rounded-full ring-1 ring-slate-900/5 shadow-md flex items-center justify-center"
+                onClick={() => setIsPlaying(!isPlaying)}
+                aria-label="Pause"
+              >
+                {isPlaying ? (
+                  <PauseIcon className="h-9 w-9 cursor-pointer text-slate" />
+                ) : (
+                  <PlayIcon className="h-9 w-9 cursor-pointer text-slate" />
+                )}
+              </button>
+              <Link href="/">
+                <button type="button" aria-label="List">
+                  <ListBulletIcon className="h-9 w-9 cursor-pointer text-white mb-2 ml-2" />
+                </button>
+              </Link>
+            </div>
+            <Link href={Number(page) < maxPages ? `${Number(page) + 1}` : `#`}>
+              <button
+                type="button"
+                aria-label="Previous"
+                className="flex flex-grow justify-end"
+              >
+                <ChevronRightIcon className="h-9 w-9 cursor-pointer text-white mb-2" />
+              </button>
+            </Link>
+          </div>
         </div>
       </div>
     </div>
