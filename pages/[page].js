@@ -48,7 +48,10 @@ const Page = (quran) => {
       <div className="fixed bottom-0 left-0 right-0">
         <div className="bg-[#222C50] text-slate-500 dark:bg-slate-600 dark:text-slate-200 flex items-center justify-center">
           <div className="flex-auto flex items-center max-w-2xl px-2">
-            <Link href={Number(page) > 1 ? `${Number(page) - 1}` : `#`}>
+            <Link
+              href={Number(page) > 1 ? `${Number(page) - 1}` : `#`}
+              passHref
+            >
               <button
                 type="button"
                 aria-label="Next"
@@ -60,7 +63,7 @@ const Page = (quran) => {
             <div className="flex">
               <button
                 type="button"
-                class="bg-white text-slate-900 dark:bg-slate-100 dark:text-slate-700 flex-none -mt-2 mb-2 mx-auto w-16 h-16 rounded-full ring-1 ring-slate-900/5 shadow-md flex items-center justify-center"
+                className="bg-white text-slate-900 dark:bg-slate-100 dark:text-slate-700 flex-none -mt-2 mb-2 mx-auto w-16 h-16 rounded-full ring-1 ring-slate-900/5 shadow-md flex items-center justify-center"
                 onClick={() => setIsPlaying(!isPlaying)}
                 aria-label="Pause"
               >
@@ -70,13 +73,16 @@ const Page = (quran) => {
                   <PlayIcon className="h-9 w-9 cursor-pointer text-slate" />
                 )}
               </button>
-              <Link href="/">
+              <Link href="/" passHref>
                 <button type="button" aria-label="List">
                   <ListBulletIcon className="h-9 w-9 cursor-pointer text-white mb-2 ml-2" />
                 </button>
               </Link>
             </div>
-            <Link href={Number(page) < maxPages ? `${Number(page) + 1}` : `#`}>
+            <Link
+              href={Number(page) < maxPages ? `${Number(page) + 1}` : `#`}
+              passHref
+            >
               <button
                 type="button"
                 aria-label="Previous"

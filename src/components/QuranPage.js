@@ -35,7 +35,7 @@ export default function QuranPage({ page, updatePlay, playStatus }) {
     } else {
       audioRef.current?.pause();
     }
-  }, [isPlaying, currentPage, page, playStatus]);
+  }, [isPlaying, currentPage, page, playStatus, prevPage]);
 
   const playAudio = () => {
     const newPlayStatus = !isPlaying;
