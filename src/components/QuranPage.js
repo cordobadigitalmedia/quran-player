@@ -13,13 +13,13 @@ function usePrevious(value) {
   return ref.current; //in the end, return the current ref value.
 }
 
-export default function QuranPage({ page, updatePlay, playStatus }) {
+export default function QuranPage({ page, playStatus }) {
   const audioRef = useRef(
     typeof Audio !== "undefined"
       ? new Audio(`${quranAudio}${page}.mp3`)
       : undefined
   );
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(playStatus);
   const [currentPage, setCurrentPage] = useState(page);
   const prevPage = usePrevious(currentPage);
 
@@ -37,11 +37,6 @@ export default function QuranPage({ page, updatePlay, playStatus }) {
     }
   }, [isPlaying, currentPage, page, playStatus, prevPage]);
 
-  const playAudio = () => {
-    const newPlayStatus = !isPlaying;
-    setIsPlaying(newPlayStatus);
-    updatePlay(newPlayStatus);
-  };
   return (
     <div className="-mt-[50px] -mb-[60px]">
       <img

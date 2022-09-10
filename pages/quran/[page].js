@@ -46,6 +46,9 @@ const Page = (quran) => {
   const updatePlayStatus = (status) => {
     setIsPlaying(status);
   };
+  const cancelPlay = () => {
+    setIsPlaying(false);
+  };
   return (
     <div>
       <Head>
@@ -53,19 +56,13 @@ const Page = (quran) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <TopBar />
+      <TopBar stopPlay={cancelPlay} />
       <div
         className="h-screen sm:h-full flex items-center justify-center"
         {...handlers}
       >
         <div className="max-w-2xl mx-auto pt-10 pb-20">
-          {page && (
-            <QuranPage
-              page={page}
-              updatePlay={updatePlayStatus}
-              playStatus={isPlaying}
-            />
-          )}
+          {page && <QuranPage page={page} playStatus={isPlaying} />}
         </div>
       </div>
       <div className="fixed bottom-0 left-0 right-0">
