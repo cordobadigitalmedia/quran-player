@@ -13,6 +13,7 @@ import {
 import TopBar from "../src/components/TopBar";
 
 const maxPages = 3;
+const totalPages = 604;
 
 const Page = (quran) => {
   const router = useRouter();
@@ -99,12 +100,12 @@ const Page = (quran) => {
 };
 
 export async function getStaticPaths() {
+  let paramArray = [];
+  for (let p = 1; p <= totalPages; p++) {
+    paramArray.push({ params: { page: p.toString() } });
+  }
   return {
-    paths: [
-      { params: { page: "1" } },
-      { params: { page: "2" } },
-      { params: { page: "3" } },
-    ],
+    paths: paramArray,
     fallback: false, // can also be true or 'blocking'
   };
 }
