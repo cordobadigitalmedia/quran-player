@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import QuranPage from "../src/components/QuranPage";
+import QuranPage from "../../src/components/QuranPage";
 import Link from "next/link";
 import {
   ChevronRightIcon,
@@ -10,7 +10,7 @@ import {
   PauseIcon,
   ListBulletIcon,
 } from "@heroicons/react/24/solid";
-import TopBar from "../src/components/TopBar";
+import TopBar from "../../src/components/TopBar";
 
 const maxPages = 3;
 const totalPages = 604;

@@ -29,7 +29,7 @@ export default function Home(chapterData) {
 
   const gotoPage = (val) => {
     setSelectedPage(val);
-    router.push(`/${val.id}`);
+    router.push(`/quran/${val.id}`);
   };
 
   let pages = [];
@@ -57,7 +57,7 @@ export default function Home(chapterData) {
   featured.forEach((item) => {
     featuredChapters.push({
       id: item,
-      link: `/${chapterData.chapterData.chapters[item - 1].pages[0]}`,
+      link: `/quran/${chapterData.chapterData.chapters[item - 1].pages[0]}`,
       name: chapterData.chapterData.chapters[item - 1].name_arabic,
       bgColor: "bg-[#222C50]",
     });
