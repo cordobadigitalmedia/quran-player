@@ -1,6 +1,5 @@
 import Head from "next/head";
 import React, { useState, useEffect, useRef } from "react";
-import TopBar from "../src/components/TopBar";
 import {
   CheckIcon,
   ChevronUpDownIcon,
@@ -8,6 +7,7 @@ import {
 } from "@heroicons/react/20/solid";
 import { Combobox } from "@headlessui/react";
 import { useRouter } from "next/router";
+import arabicNumbers from "../src/utils/arabic-numbers";
 
 const featured = [18, 36, 56, 67];
 
@@ -16,9 +16,6 @@ const totalPages = 604;
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
-
-const quranImage =
-  "https://res.cloudinary.com/duisewapt/image/upload/v1662666252/quran/pages/";
 
 export default function Home(chapterData) {
   const [query1, setQuery1] = useState("");
@@ -34,7 +31,7 @@ export default function Home(chapterData) {
 
   let pages = [];
   for (let p = 1; p <= totalPages; p++) {
-    pages.push({ id: p, name: `Page ${p}` });
+    pages.push({ id: p, name: `صفحة ${arabicNumbers(p)}` });
   }
 
   const filteredPages =
@@ -82,7 +79,7 @@ export default function Home(chapterData) {
             <li className="col-span-1 flex w-40">
               <Combobox as="div" value={selectedPage} onChange={gotoPage}>
                 <Combobox.Label className="block text-sm font-medium text-gray-700">
-                  By Page
+                  حسب الصفحة
                 </Combobox.Label>
                 <div className="relative mt-1">
                   <Combobox.Input
@@ -114,15 +111,16 @@ export default function Home(chapterData) {
                         >
                           {({ active, selected }) => (
                             <>
-                              <span
-                                className={classNames(
-                                  "block truncate",
-                                  selected && "font-semibold"
-                                )}
-                              >
-                                {page.name}
-                              </span>
-
+                              <a href={`/quran/${page.id}`}>
+                                <span
+                                  className={classNames(
+                                    "block truncate",
+                                    selected && "font-semibold"
+                                  )}
+                                >
+                                  {page.name}
+                                </span>
+                              </a>
                               {selected && (
                                 <span
                                   className={classNames(
@@ -148,7 +146,7 @@ export default function Home(chapterData) {
             <li className="col-span-1 flex w-40">
               <Combobox as="div" value={selectedChapter} onChange={gotoPage}>
                 <Combobox.Label className="block text-sm font-medium text-gray-700">
-                  By Chapter
+                  حسب السورة
                 </Combobox.Label>
                 <div className="relative mt-1">
                   <Combobox.Input
@@ -180,15 +178,23 @@ export default function Home(chapterData) {
                         >
                           {({ active, selected }) => (
                             <>
-                              <span
-                                className={classNames(
-                                  "block truncate",
-                                  selected && "font-semibold"
-                                )}
+                              <a
+                                href={`/quran/${
+                                  chapterData.chapterData.chapters[
+                                    chapter.id - 1
+                                  ].pages[0]
+                                }`}
                               >
-                                {chapter.id}. {chapter.name_arabic}
-                              </span>
-
+                                <span
+                                  className={classNames(
+                                    "block truncate",
+                                    selected && "font-semibold"
+                                  )}
+                                >
+                                  {arabicNumbers(chapter.id)}.{" "}
+                                  {chapter.name_arabic}
+                                </span>
+                              </a>
                               {selected && (
                                 <span
                                   className={classNames(
@@ -224,13 +230,13 @@ export default function Home(chapterData) {
                   <div
                     className={classNames(
                       chapter.bgColor,
-                      "flex-shrink-0 flex items-center justify-center w-16 text-white text-sm font-medium rounded-l-md"
+                      "flex-shrink-0 flex items-center justify-center w-16 text-white text-xl font-medium rounded-r-md"
                     )}
                   >
-                    {chapter.id}
+                    {arabicNumbers(chapter.id)}
                   </div>
-                  <div className="flex flex-1 items-center justify-between truncate rounded-r-md border-t border-r border-b border-gray-200 bg-white">
-                    <div className="flex-1 truncate px-4 py-2 text-sm">
+                  <div className="flex flex-1 items-center justify-between truncate rounded-l-md border-t border-l border-b border-gray-200 bg-white">
+                    <div className="flex-1 truncate px-4 py-2 text-xl">
                       <span className="font-medium text-gray-900 hover:text-gray-600">
                         {chapter.name}
                       </span>

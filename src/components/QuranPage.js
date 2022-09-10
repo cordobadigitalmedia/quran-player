@@ -45,8 +45,7 @@ export default function QuranPage({ page, updatePlay, playStatus }) {
   return (
     <div className="-mt-[50px] -mb-[60px]">
       <img
-        onClick={() => playAudio()}
-        className="mx-auto hover:cursor-pointer"
+        className="mx-auto"
         src={`${quranImage}${currentPage}.jpg`}
         alt="Quran page"
       />
