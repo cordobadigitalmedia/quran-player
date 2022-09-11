@@ -8,8 +8,7 @@ import TopBar from "../../src/components/TopBar";
 import AudioPlayer from "../../src/components/AudioPlayer";
 
 //Add transition for swipe
-//move audioSrc to this context
-//Add loader to image - https://frontend-digest.com/progressively-loading-images-in-react-107cb075417a
+//Add timer and end of audio stop
 
 const maxPages = 3;
 const totalPages = 604;

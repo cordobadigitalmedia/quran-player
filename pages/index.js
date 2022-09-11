@@ -8,6 +8,7 @@ import {
 import { Combobox } from "@headlessui/react";
 import { useRouter } from "next/router";
 import arabicNumbers from "../src/utils/arabic-numbers";
+import Image from "next/future/image";
 
 const featured = [18, 36, 56, 67];
 
@@ -59,7 +60,7 @@ export default function Home(chapterData) {
       bgColor: "bg-[#222C50]",
     });
   });
-
+  const css = { maxWidth: "100%", height: "auto" };
   return (
     <>
       <Head>
@@ -67,7 +68,16 @@ export default function Home(chapterData) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="w-full flex flex-col items-center justify-center">
-        <img src="/0.png" className="w-48 mt-4" />
+        <Image
+          style={css}
+          className="w-48 mt-4"
+          src="/0.png"
+          alt="Quran page"
+          width={1000}
+          height={1000}
+          placeholder="blur"
+          blurDataURL="/placeholder.png"
+        />
         <div className="justify-center text-lg md:text-xl lg:text-2xl">
           تلاوة القرآن بصوت عبدالله عادل
         </div>
