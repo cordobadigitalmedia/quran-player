@@ -3,14 +3,13 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import QuranPage from "../../src/components/QuranPage";
 import { useSwipeable, UP, DOWN, SwipeEventData } from "react-swipeable";
-import {
-  ChevronRightIcon,
-  ChevronLeftIcon,
-  PlayIcon,
-  PauseIcon,
-  ListBulletIcon,
-} from "@heroicons/react/24/solid";
+import { ChevronRightIcon, ChevronLeftIcon } from "@heroicons/react/24/solid";
 import TopBar from "../../src/components/TopBar";
+import AudioPlayer from "../../src/components/AudioPlayer";
+
+//Add transition for swipe
+//move audioSrc to this context
+//Add loader to image - https://frontend-digest.com/progressively-loading-images-in-react-107cb075417a
 
 const maxPages = 3;
 const totalPages = 604;
@@ -62,7 +61,7 @@ const Page = (quran) => {
         {...handlers}
       >
         <div className="max-w-2xl mx-auto pt-10 pb-20">
-          {page && <QuranPage page={page} playStatus={isPlaying} />}
+          {page && <QuranPage page={page} />}
         </div>
       </div>
       <div className="fixed bottom-0 left-0 right-0">
@@ -78,22 +77,7 @@ const Page = (quran) => {
                 </button>
               </a>
             </div>
-            <div
-              className="flex flex-grow cursor:pointer"
-              onClick={() => setIsPlaying(!isPlaying)}
-            >
-              <button
-                type="button"
-                className="bg-white text-slate-900 dark:bg-slate-100 dark:text-slate-700 flex-none -mt-2 mb-2 mx-auto w-16 h-16 rounded-full ring-1 ring-slate-900/5 shadow-md flex items-center justify-center"
-                aria-label="Pause"
-              >
-                {isPlaying ? (
-                  <PauseIcon className="h-9 w-9 cursor-pointer text-slate" />
-                ) : (
-                  <PlayIcon className="h-9 w-9 cursor-pointer text-slate" />
-                )}
-              </button>
-            </div>
+            {page && <AudioPlayer page={page} />}
             <div className="flex justify-end">
               <a
                 onClick={() => setIsPlaying(false)}
