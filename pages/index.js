@@ -1,11 +1,12 @@
 import Head from "next/head";
 import React, { useState, useEffect, useRef } from "react";
 import {
+  MagnifyingGlassIcon,
   CheckIcon,
   ChevronUpDownIcon,
   EllipsisVerticalIcon,
 } from "@heroicons/react/20/solid";
-import { Combobox } from "@headlessui/react";
+import { Switch } from "@headlessui/react";
 import { useRouter } from "next/router";
 import arabicNumbers from "../src/utils/arabic-numbers";
 import Image from "next/future/image";
@@ -19,6 +20,7 @@ function classNames(...classes) {
 }
 
 export default function Home(chapterData) {
+  const [enabled, setEnabled] = useState(false);
   const [query1, setQuery1] = useState("");
   const [query2, setQuery2] = useState("");
   const router = useRouter();
@@ -51,6 +53,7 @@ export default function Home(chapterData) {
             .includes(query2.toLowerCase());
         });
 
+  console.log(filteredChapters);
   let featuredChapters = [];
   featured.forEach((item) => {
     featuredChapters.push({
@@ -67,195 +70,71 @@ export default function Home(chapterData) {
         <title>Quran Recitation</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="w-full flex flex-col items-center justify-center">
+      <div className="w-full flex flex-col h-full items-center bg-[#FAFBFD]">
         <Image
           style={css}
-          className="w-48 mt-4"
-          src="/0.png"
-          alt="Quran page"
-          width={1000}
-          height={1000}
+          className="w-40 mt-8"
+          src="/home-logo.png"
+          alt="Quran al Karim"
+          width={169}
+          height={97}
           placeholder="blur"
           blurDataURL="/placeholder.png"
         />
-        <div className="justify-center text-lg md:text-xl lg:text-2xl">
-          تلاوة القرآن بصوت عبدالله عادل
+        <div className="font-sans mt-3 font-semibold justify-center text-xs">
+          <span className="text-[#000513]">recited by</span>{" "}
+          <span className="text-[#268F97]">Abdullah Adel</span>
         </div>
         <section>
-          <ul
-            role="list"
-            className="mt-3 grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6"
+          <div className="flex w-96 min-w-full border-[#C4C8CF] border rounded-full h-10 mt-4 bg-white">
+            <MagnifyingGlassIcon className="ml-1.5 w-6 text-[#007C84]" />
+            <input
+              type="search"
+              className="font-sans text-xs px-1 py-2 border-none flex-grow rounded-full"
+              placeholder="Find by page/juz/sura number, chapter title or search term"
+            />
+          </div>
+        </section>
+        <section className="flex justify-center items-center mt-3">
+          <div className="text-[#252E50] text-[11px] mr-2">
+            By chapter/surah
+          </div>
+          <Switch
+            checked={enabled}
+            onChange={setEnabled}
+            className={`${
+              enabled ? "bg-[#252E50]" : "bg-[#268F97]"
+            } relative inline-flex h-6 w-11 items-center rounded-full`}
           >
-            <li className="col-span-1 flex w-40">
-              <Combobox as="div" value={selectedPage} onChange={gotoPage}>
-                <Combobox.Label className="block text-sm font-medium text-gray-700">
-                  حسب الصفحة
-                </Combobox.Label>
-                <div className="relative mt-1">
-                  <Combobox.Input
-                    className="w-full rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm"
-                    onChange={(event) => setQuery1(event.target.value)}
-                    displayValue={(page) => page?.name}
-                  />
-                  <Combobox.Button className="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none">
-                    <ChevronUpDownIcon
-                      className="h-5 w-5 text-gray-400"
-                      aria-hidden="true"
-                    />
-                  </Combobox.Button>
-
-                  {filteredPages.length > 0 && (
-                    <Combobox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                      {filteredPages.map((page) => (
-                        <Combobox.Option
-                          key={page.id}
-                          value={page}
-                          className={({ active }) =>
-                            classNames(
-                              "relative cursor-default select-none py-2 pl-3 pr-9",
-                              active
-                                ? "bg-indigo-600 text-white"
-                                : "text-gray-900"
-                            )
-                          }
-                        >
-                          {({ active, selected }) => (
-                            <>
-                              <a href={`/quran/${page.id}`}>
-                                <span
-                                  className={classNames(
-                                    "block truncate",
-                                    selected && "font-semibold"
-                                  )}
-                                >
-                                  {page.name}
-                                </span>
-                              </a>
-                              {selected && (
-                                <span
-                                  className={classNames(
-                                    "absolute inset-y-0 right-0 flex items-center pr-4",
-                                    active ? "text-white" : "text-indigo-600"
-                                  )}
-                                >
-                                  <CheckIcon
-                                    className="h-5 w-5"
-                                    aria-hidden="true"
-                                  />
-                                </span>
-                              )}
-                            </>
-                          )}
-                        </Combobox.Option>
-                      ))}
-                    </Combobox.Options>
-                  )}
-                </div>
-              </Combobox>
-            </li>
-            <li className="col-span-1 flex w-40">
-              <Combobox as="div" value={selectedChapter} onChange={gotoPage}>
-                <Combobox.Label className="block text-sm font-medium text-gray-700">
-                  حسب السورة
-                </Combobox.Label>
-                <div className="relative mt-1">
-                  <Combobox.Input
-                    className="w-full rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm"
-                    onChange={(event) => setQuery2(event.target.value)}
-                    displayValue={(chapter) => chapter?.name_arabic}
-                  />
-                  <Combobox.Button className="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none">
-                    <ChevronUpDownIcon
-                      className="h-5 w-5 text-gray-400"
-                      aria-hidden="true"
-                    />
-                  </Combobox.Button>
-
-                  {filteredChapters.length > 0 && (
-                    <Combobox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                      {filteredChapters.map((chapter) => (
-                        <Combobox.Option
-                          key={chapter.id}
-                          value={chapter}
-                          className={({ active }) =>
-                            classNames(
-                              "relative cursor-default select-none py-2 pl-3 pr-9",
-                              active
-                                ? "bg-indigo-600 text-white"
-                                : "text-gray-900"
-                            )
-                          }
-                        >
-                          {({ active, selected }) => (
-                            <>
-                              <a
-                                href={`/quran/${
-                                  chapterData.chapterData.chapters[
-                                    chapter.id - 1
-                                  ].pages[0]
-                                }`}
-                              >
-                                <span
-                                  className={classNames(
-                                    "block truncate",
-                                    selected && "font-semibold"
-                                  )}
-                                >
-                                  {arabicNumbers(chapter.id)}.{" "}
-                                  {chapter.name_arabic}
-                                </span>
-                              </a>
-                              {selected && (
-                                <span
-                                  className={classNames(
-                                    "absolute inset-y-0 right-0 flex items-center pr-4",
-                                    active ? "text-white" : "text-indigo-600"
-                                  )}
-                                >
-                                  <CheckIcon
-                                    className="h-5 w-5"
-                                    aria-hidden="true"
-                                  />
-                                </span>
-                              )}
-                            </>
-                          )}
-                        </Combobox.Option>
-                      ))}
-                    </Combobox.Options>
-                  )}
-                </div>
-              </Combobox>
-            </li>
-          </ul>
+            <span
+              className={`${
+                enabled ? "translate-x-6" : "translate-x-1"
+              } inline-block h-4 w-4 transform rounded-full bg-white transition`}
+            />
+          </Switch>
+          <div className="text-[#252E50] text-[11px] ml-2">By section/juz</div>
         </section>
         <section className="mt-6 mb-10">
-          <ul
-            role="list"
-            className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6"
-          >
-            {featuredChapters.map((chapter) => (
-              <a href={chapter.link} key={chapter.name}>
-                <li className="col-span-1 flex rounded-md shadow-sm w-40">
-                  <div
-                    className={classNames(
-                      chapter.bgColor,
-                      "flex-shrink-0 flex items-center justify-center w-16 text-white text-xl font-medium rounded-r-md"
-                    )}
-                  >
-                    {arabicNumbers(chapter.id)}
+          <div role="list" className="grid grid-cols-3 gap-4 lg:grid-cols-5">
+            {filteredChapters.map((chapter) => (
+              <a href={`/quran/${chapter.pages[0]}`} key={chapter.name_simple}>
+                <div className="col-span-1 flex flex-col rounded-lg bg-white border-[#C4C8CF] border justify-center items-center p-1 hover:border-[#252E50] hover:cursor-pointer">
+                  <div className="font-serif text-[#252E50] mt-1 text-lg">
+                    {chapter.name_simple}
                   </div>
-                  <div className="flex flex-1 items-center justify-between truncate rounded-l-md border-t border-l border-b border-gray-200 bg-white">
-                    <div className="flex-1 truncate px-4 py-2 text-xl">
-                      <span className="font-medium text-gray-900 hover:text-gray-600">
-                        {chapter.name}
-                      </span>
-                    </div>
+                  <div className="text-[#000513] font-semibold font-sans text-xs mt-1">
+                    {chapter.translated_name.name}
                   </div>
-                </li>
+                  <div className="text-[10px] text-[#646E84] font-sans text-xs mt-2">
+                    {chapter.verses_count} verses
+                  </div>
+                  <div className="text-[10px] text-[#646E84] font-sans text-xs mb-1">
+                    Pages {chapter.pages[0]}-{chapter.pages[1]}
+                  </div>
+                </div>
               </a>
             ))}
-          </ul>
+          </div>
         </section>
       </div>
     </>

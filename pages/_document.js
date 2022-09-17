@@ -8,12 +8,12 @@ class MyDocument extends Document {
 
   render() {
     return (
-      <Html dir="rtl">
+      <Html>
         <Head>
           <meta name="description" content="Recitation by Abdullah Adel" />
           <link rel="icon" href="/favicon.ico" />
           <link
-            href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@100;400;600;700&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap"
             rel="stylesheet"
           />
         </Head>

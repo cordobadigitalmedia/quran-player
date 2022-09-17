@@ -6,7 +6,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["Noto Naskh Arabic"],
+        sans: ["Inter"],
+        serif: ["Noto Naskh Arabic"],
       },
     },
   },
