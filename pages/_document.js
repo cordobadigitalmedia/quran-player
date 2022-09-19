@@ -8,7 +8,7 @@ class MyDocument extends Document {
 
   render() {
     return (
-      <Html>
+      <Html dir="ltr">
         <Head>
           <meta name="description" content="Recitation by Abdullah Adel" />
           <link rel="icon" href="/favicon.ico" />

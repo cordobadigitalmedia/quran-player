@@ -56,11 +56,11 @@ const Page = (quran) => {
 
       <TopBar stopPlay={cancelPlay} />
       <div
-        className="h-screen sm:h-full flex items-center justify-center bg-[#FAFBFD]"
+        className="h-screen sm:h-full flex items-center justify-center"
         {...handlers}
       >
         <div className="max-w-2xl mx-auto pt-10 pb-20">
-          {page && <QuranPage page={quran.quran} />}
+          {page && <QuranPage page={page} />}
         </div>
       </div>
       <div className="fixed bottom-0 left-0 right-0">
@@ -108,7 +108,7 @@ export async function getStaticPaths() {
 export async function getStaticProps({ params }) {
   if (params.page) {
     const res = await fetch(
-      `https://api.quran.com/api/v4/verses/by_page/${params.page}?words=true&word_fields=text_uthmani,line_number`
+      `https://api.quran.com/api/v4/quran/verses/uthmani?page_number=${params.page}`
     );
     const data = await res.json();
     return {

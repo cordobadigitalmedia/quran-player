@@ -7,7 +7,8 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: ["Inter"],
-        serif: ["Noto Naskh Arabic"],
+        arabic: ["Noto Naskh Arabic"],
+        surahnames: ["surahnames"],
       },
     },
   },

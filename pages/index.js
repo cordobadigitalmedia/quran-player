@@ -119,8 +119,8 @@ export default function Home(chapterData) {
             {filteredChapters.map((chapter) => (
               <a href={`/quran/${chapter.pages[0]}`} key={chapter.name_simple}>
                 <div className="col-span-1 flex flex-col rounded-lg bg-white border-[#C4C8CF] border justify-center items-center p-1 hover:border-[#252E50] hover:cursor-pointer">
-                  <div className="font-serif text-[#252E50] mt-1 text-lg">
-                    {chapter.name_simple}
+                  <div className="font-arabic text-[#252E50] mt-1 text-xl">
+                    {chapter.name_arabic}
                   </div>
                   <div className="text-[#000513] font-semibold font-sans text-xs mt-1">
                     {chapter.translated_name.name}
