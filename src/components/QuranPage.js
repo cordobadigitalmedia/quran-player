@@ -66,23 +66,23 @@ export default function QuranPage({ page, chapters, pageNo }) {
           className="font-arabic text-2xl text-black flex justify-between grow"
         >
           {Object.keys(lines[line]).map((verse) => (
-            <span
+            <div
               key={lines[line][verse]}
-              className="hover:border hover:border-[#00000] hover:cursor-pointer flex grow"
+              className="transition-opacity ease-in-out duration-300 rounded border border-transparent hover:border hover:border-blue-300 hover:cursor-pointer flex grow justify-between"
             >
               {lines[line][verse].map((item) => (
-                <span
+                <div
                   key={item}
                   className={
                     item.type === "verse"
-                      ? `flex grow items-stretch`
+                      ? `text-center grow p-0.5`
                       : `text-center grow`
                   }
                 >
                   {item.word}
-                </span>
+                </div>
               ))}
-            </span>
+            </div>
           ))}
         </div>
       ))}
