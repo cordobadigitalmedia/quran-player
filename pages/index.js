@@ -53,7 +53,6 @@ export default function Home(chapterData) {
             .includes(query2.toLowerCase());
         });
 
-  console.log(filteredChapters);
   let featuredChapters = [];
   featured.forEach((item) => {
     featuredChapters.push({

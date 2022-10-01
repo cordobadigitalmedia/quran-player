@@ -13,7 +13,7 @@ import AudioPlayer from "../../src/components/AudioPlayer";
 const maxPages = 3;
 const totalPages = 604;
 
-const Page = (quran) => {
+const Page = ({ quran, chapters }) => {
   const router = useRouter();
   const { page } = router.query;
   const handleSwiped = (eventData) => {
@@ -35,7 +35,9 @@ const Page = (quran) => {
     trackMouse: true,
   });
 
-  const pageData = quran.page;
+  const pageData = quran;
+  console.log(quran);
+  console.log(chapters);
   const [currentPage, setCurrentPage] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   useEffect(() => {
@@ -60,7 +62,13 @@ const Page = (quran) => {
         {...handlers}
       >
         <div className="max-w-2xl mx-auto pt-10 pb-20">
-          {page && <QuranPage page={quran.quran} />}
+          {page && (
+            <QuranPage
+              page={quran}
+              chapters={chapters.chapters}
+              pageNo={currentPage}
+            />
+          )}
         </div>
       </div>
       <div className="fixed bottom-0 left-0 right-0">
@@ -108,11 +116,13 @@ export async function getStaticPaths() {
 export async function getStaticProps({ params }) {
   if (params.page) {
     const res = await fetch(
-      `https://api.quran.com/api/v4/verses/by_page/${params.page}?words=true&word_fields=text_uthmani,line_number`
+      `https://api.quran.com/api/v4/verses/by_page/${params.page}?words=true&word_fields=text_uthmani,line_number&fields=chapter_id`
     );
     const data = await res.json();
+    const resChapters = await fetch(`https://api.quran.com/api/v4/chapters/`);
+    const dataChapters = await resChapters.json();
     return {
-      props: { quran: data },
+      props: { quran: data, chapters: dataChapters },
     };
   }
 }
