@@ -71,6 +71,7 @@ export default function QuranPage({ page, chapters, pageNo }) {
     >
       {pagetext.map((verse) => (
         <span
+          key={verse}
           className={
             verse.type === "text"
               ? `transition ease-in-out delay-100 hover:-translate-y-1 hover:scale-110 hover:bg-indigo-500 duration-300 hover:cursor-pointer rounded`
