@@ -74,7 +74,7 @@ export default function QuranPage({ page, chapters, pageNo }) {
           className={
             verse.type === "text"
               ? `transition ease-in-out delay-100 hover:-translate-y-1 hover:scale-110 hover:bg-indigo-500 duration-300 hover:cursor-pointer rounded`
-              : `rounded-full border border-cyan-300 mx-2 px-4`
+              : `rounded-full border border-cyan-300 mx-[5px] px-[10px] text-base`
           }
         >
           {verse.value}
