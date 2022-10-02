@@ -9,13 +9,13 @@ export default function TopBar({ stopPlay }) {
     router.push("/");
   };
   return (
-    <div className="flex justify-center justify-items-stretch p-2 text-white fixed top-0 left-0 right-0">
+    <div className="flex justify-center justify-items-stretch p-1 text-white fixed top-0 left-0 right-0 bg-slate-50 drop-shadow">
       <div
         className="flex flex-row cursor-pointer"
         onClick={() => handleHome()}
       >
         <button type="button" aria-label="List">
-          <BookOpenIcon className="h-7 w-7 text-[#007C84] mb-2 ml-2" />
+          <BookOpenIcon className="h-[24px] w-[24px] text-[#007C84]" />
         </button>
       </div>
     </div>

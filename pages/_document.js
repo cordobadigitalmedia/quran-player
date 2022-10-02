@@ -8,7 +8,7 @@ class MyDocument extends Document {
 
   render() {
     return (
-      <Html dir="ltr">
+      <Html dir="ltr" className="h-full">
         <Head>
           <meta name="description" content="Recitation by Abdullah Adel" />
           <link rel="icon" href="/favicon.ico" />
@@ -17,7 +17,7 @@ class MyDocument extends Document {
             rel="stylesheet"
           />
         </Head>
-        <body>
+        <body className="h-full">
           <Main />
           <NextScript />
         </body>

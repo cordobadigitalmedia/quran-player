@@ -6,17 +6,9 @@ const quranImage =
 
 export default function QuranPage({ page, chapters, pageNo }) {
   const [currentPage, setCurrentPage] = useState(page);
+  console.log(chapters, page);
   let lines = {};
-  let pagetext = [];
-  console.log(page);
   page.verses.forEach((verse, v) => {
-    let currentVerse = verse.words.map((word) => word.text_uthmani);
-    currentVerse.pop();
-    pagetext.push({ type: "text", value: currentVerse.join(" ") });
-    pagetext.push({
-      type: "stop",
-      value: verse.words[verse.words.length - 1].text_uthmani,
-    });
     verse.words.forEach((word, w) => {
       if (lines[word.line_number]) {
         if (lines[word.line_number][verse.verse_number]) {
@@ -45,11 +37,13 @@ export default function QuranPage({ page, chapters, pageNo }) {
     });
   });
   //check if we need to add chapter title
+  console.log(pageNo);
   if (pageNo > 2) {
     for (let p = 1; p <= 15; p++) {
       if (!lines[p] && !lines[p + 1]) {
         lines[p] = new Object();
         lines[p][1] = new Array();
+        console.log(lines[p + 2][1]);
         lines[p][1].push({
           type: "title",
           word: `Sura ${lines[p + 2][1][0].chapter}`,
@@ -60,25 +54,37 @@ export default function QuranPage({ page, chapters, pageNo }) {
       }
     }
   }
-  console.log(pagetext);
+  console.log(lines);
   useEffect(() => {
     setCurrentPage(page);
   }, [page]);
   return (
-    <div
-      dir="rtl"
-      className="font-arabic text-2xl text-black text-justify leading-loose pt-[36px] pb-10 px-4"
-    >
-      {pagetext.map((verse) => (
-        <span
-          className={
-            verse.type === "text"
-              ? `transition ease-in-out delay-100 hover:-translate-y-1 hover:scale-110 hover:bg-indigo-500 duration-300 hover:cursor-pointer rounded`
-              : `rounded-full border border-cyan-300 mx-2 px-4`
-          }
+    <div dir="rtl">
+      {Object.keys(lines).map((line) => (
+        <div
+          key={lines[line]}
+          className="font-arabic text-2xl text-black flex justify-between grow"
         >
-          {verse.value}
-        </span>
+          {Object.keys(lines[line]).map((verse) => (
+            <div
+              key={lines[line][verse]}
+              className="transition-opacity ease-in-out duration-300 rounded border border-transparent hover:border hover:border-blue-300 hover:cursor-pointer flex grow justify-between"
+            >
+              {lines[line][verse].map((item) => (
+                <div
+                  key={item}
+                  className={
+                    item.type === "verse"
+                      ? `text-center grow p-0.5`
+                      : `text-center grow`
+                  }
+                >
+                  {item.word}
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
       ))}
     </div>
   );

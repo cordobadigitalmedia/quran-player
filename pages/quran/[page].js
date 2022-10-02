@@ -50,53 +50,20 @@ const Page = ({ quran, chapters }) => {
     setIsPlaying(false);
   };
   return (
-    <div>
+    <div className="h-full w-full flex justify-center">
       <Head>
         <title>Quran Recitation</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
       <TopBar stopPlay={cancelPlay} />
-      <div
-        className="h-screen sm:h-full flex items-center justify-center bg-[#FAFBFD]"
-        {...handlers}
-      >
-        <div className="max-w-2xl mx-auto pt-10 pb-20">
-          {page && (
-            <QuranPage
-              page={quran}
-              chapters={chapters.chapters}
-              pageNo={currentPage}
-            />
-          )}
-        </div>
-      </div>
-      <div className="fixed bottom-0 left-0 right-0">
-        <div className="bg-[#222C50] text-slate-500 dark:bg-slate-600 dark:text-slate-200 flex items-center justify-center">
-          <div className="flex-auto flex items-center max-w-2xl px-2">
-            <div className="flex justify-start">
-              <a
-                onClick={() => setIsPlaying(false)}
-                href={Number(page) > 1 ? `${Number(page) - 1}` : `#`}
-              >
-                <button type="button" aria-label="Previous">
-                  <ChevronRightIcon className="h-9 w-9 cursor-pointer text-white mb-2" />
-                </button>
-              </a>
-            </div>
-            {page && <AudioPlayer page={page} />}
-            <div className="flex justify-end">
-              <a
-                onClick={() => setIsPlaying(false)}
-                href={Number(page) < maxPages ? `${Number(page) + 1}` : `#`}
-              >
-                <button type="button" aria-label="Next">
-                  <ChevronLeftIcon className="h-9 w-9 cursor-pointer text-white mb-2" />
-                </button>
-              </a>
-            </div>
-          </div>
-        </div>
+      <div className="max-w-[480px]">
+        {page && (
+          <QuranPage
+            page={quran}
+            chapters={chapters.chapters}
+            pageNo={currentPage}
+          />
+        )}
       </div>
     </div>
   );
