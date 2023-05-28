@@ -7,6 +7,7 @@ import {
   EllipsisVerticalIcon,
 } from "@heroicons/react/20/solid";
 import { Switch } from "@headlessui/react";
+import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import { useRouter } from "next/router";
 import arabicNumbers from "../src/utils/arabic-numbers";
 import Image from "next/future/image";
@@ -26,6 +27,40 @@ export default function Home(chapterData) {
   const router = useRouter();
   const [selectedPage, setSelectedPage] = useState();
   const [selectedChapter, setSelectedChapter] = useState();
+  const commands = [
+    {
+      command: 'Go to page :number',
+      callback: (number) => router.push(`/quran/${number}`)
+    },
+    {
+      command: 'Go to (chapter) :query',
+      callback: (query) => gotoChapter(query)
+    },
+    {
+      command: 'Go to :query',
+      callback: (query) => gotoChapter(query)
+    },
+  ];
+
+  const { transcript, browserSupportsSpeechRecognition } = useSpeechRecognition({ commands });
+
+  const gotoChapter = (query) => {
+    console.log(query);
+    if (Number(query) >= 1 && Number(query) <= 114) {
+      router.push(`/quran/${filteredChapters[Number(query) - 1].pages[0]}`)
+    } else {
+      const match = filteredChapters.filter(chapter => chapter.translated_name.name.toLowerCase().includes(query.toLowerCase()));
+      console.log(match);
+      if (match.length > 0) {
+        router.push(`/quran/${match[0].pages[0]}`)
+      } else {
+        console.log("no match");
+      }
+    }
+  }
+
+
+  SpeechRecognition.startListening({ continuous: true })
 
   const gotoPage = (val) => {
     setSelectedPage(val);
@@ -41,17 +76,17 @@ export default function Home(chapterData) {
     query1 === ""
       ? pages
       : pages.filter((page) => {
-          return page.name.toLowerCase().includes(query1.toLowerCase());
-        });
+        return page.name.toLowerCase().includes(query1.toLowerCase());
+      });
 
   const filteredChapters =
     query2 === ""
       ? chapterData.chapterData.chapters
       : chapterData.chapterData.chapters.filter((chapter) => {
-          return chapter.name_arabic
-            .toLowerCase()
-            .includes(query2.toLowerCase());
-        });
+        return chapter.name_arabic
+          .toLowerCase()
+          .includes(query2.toLowerCase());
+      });
 
   let featuredChapters = [];
   featured.forEach((item) => {
@@ -101,14 +136,12 @@ export default function Home(chapterData) {
           <Switch
             checked={enabled}
             onChange={setEnabled}
-            className={`${
-              enabled ? "bg-[#252E50]" : "bg-[#268F97]"
-            } relative inline-flex h-6 w-11 items-center rounded-full`}
+            className={`${enabled ? "bg-[#252E50]" : "bg-[#268F97]"
+              } relative inline-flex h-6 w-11 items-center rounded-full`}
           >
             <span
-              className={`${
-                enabled ? "translate-x-6" : "translate-x-1"
-              } inline-block h-4 w-4 transform rounded-full bg-white transition`}
+              className={`${enabled ? "translate-x-6" : "translate-x-1"
+                } inline-block h-4 w-4 transform rounded-full bg-white transition`}
             />
           </Switch>
           <div className="text-[#252E50] text-[11px] ml-2">By section/juz</div>
